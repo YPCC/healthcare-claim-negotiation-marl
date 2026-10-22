@@ -19,80 +19,69 @@ Real verbatim claim negotiation transcripts are proprietary and contain PHI. Thi
 ├── README.md
 ├── requirements.txt
 ├── data/
-│   └── imr_example_seeds.json          # Seed cases derived from real IMR Findings
+│   ├── imr_example_seeds.json          # Seed cases derived from real IMR Findings
+│   └── simulation_results_50.json       # Machine-readable results (sample + linkage)
 ├── docs/
-│   └── demo_omnitrope_negotiation.md   # Captured simulation + two-minute narrative
+│   ├── demo_omnitrope_negotiation.md   # Captured single-case simulation + narrative
+│   └── imr_48_simulation_results.md    # 48 real IMR ReferenceID cases + outcomes table
 ├── src/
-│   ├── generate_dataset.py            # Generate multi-turn dialogues from seeds
-│   ├── negmas_claim_negotiation.py    # Core NegMAS SAO scenario
-│   └── run_scenarios.py               # Run multiple negotiation scenarios end-to-end
+│   ├── generate_dataset.py
+│   ├── negmas_claim_negotiation.py
+│   └── run_scenarios.py
 └── examples/
-    └── sample_dialogues.json            # Example generated multi-turn transcripts
+    └── sample_dialogues.json
 ```
 
 ## Quick Start
 
 ```bash
 pip install -r requirements.txt
-
-# 1. Generate synthetic multi-turn dialogues
 python src/generate_dataset.py --n 20 --out data/synthetic_negotiations.jsonl
-
-# 2. Run NegMAS end-to-end scenarios
 python src/run_scenarios.py
 ```
 
 ## Demo: Live Negotiation Simulation
 
-A full end-to-end NegMAS SAO run for an Omnitrope / growth-hormone deficiency claim (strong clinical evidence, ~65% historical overturn prior) is documented in:
+Single-case walkthrough (Omnitrope / GHD):
 
 **[docs/demo_omnitrope_negotiation.md](docs/demo_omnitrope_negotiation.md)**
 
-The demo includes:
-- Exact captured console output from a real NegMAS 0.16 simulation (agreement in 10 steps).
-- Final terms: 52% allowed, 4% prompt-pay discount, no escalation, estimated recovery $2,396 on a $4,800 bill.
-- A two-minute narrative explaining how the agents negotiate, stay inside policy shields, and optimize their designed rewards.
+## 48 IMR-Grounded Simulations (with ReferenceID linkage)
+
+**[docs/imr_48_simulation_results.md](docs/imr_48_simulation_results.md)**
+
+- 48 real DMHC IMR cases (balanced Overturned / Upheld, Medical Necessity / Experimental).
+- Every row includes the public **ReferenceID** so you can look up the original Findings at https://wpso.dmhc.ca.gov/imr/.
+- NegMAS SAO runs with policy constraints (issue bounds, step limits scaled by overturn prior, reserved values).
+- Summary: all 48 settled; average allowed ~73%; average recovery ~$3,965; average 7 steps.
+- Full table of characteristics, constraints, and outcomes is in the document above.
 
 ## Key Components
 
-### Dataset Generation (`src/generate_dataset.py`)
-- Loads IMR-style seeds (diagnosis, Findings summary, determination prior).
-- Produces multi-turn Provider Billing Specialist ↔ Insurance Adjuster dialogues.
-- Annotates actions, offers, compliance flags, and outcomes.
-- Covers renegotiation loops, prompt-pay settlements, and escalation.
+### Dataset Generation
+Loads IMR-style seeds and produces annotated multi-turn Provider ↔ Payer dialogues.
 
-### NegMAS Environment (`src/negmas_claim_negotiation.py`)
-- Issues: `allowed_pct`, `prompt_pay_discount`, `evidence_strength`, `escalate_to_imr`.
-- Opposing LinearAdditiveUtilityFunctions for Provider and Payer.
-- SAOMechanism with configurable `n_steps` (appeal loops).
-- Ready to swap in LLM negotiators (`negmas-llm`) or RL wrappers (`negmas-rl-tutorial`).
+### NegMAS Environment
+Issues: `allowed_pct`, `prompt_pay_discount`, `evidence_strength`, `escalate_to_imr`.  
+Opposing utilities + SAOMechanism. Ready for `negmas-llm` or RL wrappers.
 
-### Policy Shields (conceptual, enforced in environment or agent)
-- ERISA / prompt-pay response deadlines
-- Reference-based pricing floors
-- Medical necessity / experimental criteria
-- No premature escalation
-- Balance-billing constraints
+### Policy Shields
+ERISA-style step limits, issue-range enforcement, reserved-value walk-aways, medical-necessity / experimental priors.
 
 ## Scenarios Demonstrated
 
 | Scenario | Description | Typical Outcome Pattern |
 |----------|-------------|-------------------------|
-| Medical Necessity (GHD / Omnitrope style) | Strong clinical evidence | Settlement or Overturned |
-| Acute Rehab | Weak evidence of acute need | Upheld denial or low offer |
-| Biologic continuation (Taltz style) | Documented failure of priors | Higher recovery |
-| Prompt-pay settlement | Immediate payment incentive | Faster, lower turns |
-| Escalation to IMR | Internal negotiation fails | External review |
+| Medical Necessity (strong evidence) | High overturn prior | Higher recovery, fewer steps |
+| Medical Necessity (weak evidence) | Low overturn prior | Lower recovery or more concession |
+| Experimental / Investigational | EI-type IMR cases | Mixed; constrained by policy |
+| Prompt-pay settlement | Immediate payment incentive | Faster close |
 
 ## Relation to Research
 
-- Aligns with MA-POMDP / multi-agent sequential decision-making.
-- Compatible with frameworks such as Dialogue Diplomats (arXiv:2511.17654) hierarchical consensus + progressive negotiation.
-- Uses public IMR data the same way projects like Fight Health Insurance generate synthetic appeals.
+Aligns with MA-POMDP sequential decision-making and frameworks such as Dialogue Diplomats (arXiv:2511.17654). Uses public IMR data analogously to synthetic appeal generation projects.
 
 ## Citation
-
-If you use this repository, dataset generation approach, NegMAS scenarios, or the Omnitrope demo in your research or work, please cite:
 
 ```bibtex
 @misc{parte2026healthcareclaimnegotiation,
@@ -100,23 +89,19 @@ If you use this repository, dataset generation approach, NegMAS scenarios, or th
   title        = {Healthcare Claim Negotiation Dataset \& NegMAS MARL Showcase},
   year         = {2026},
   publisher    = {GitHub},
-  journal      = {GitHub repository},
   howpublished = {\url{https://github.com/YPCC/healthcare-claim-negotiation-marl}},
-  note         = {Synthetic multi-turn provider-payer claim negotiation dialogues and NegMAS-based MA-POMDP environment grounded in public DMHC IMR data. Includes captured Omnitrope GHD negotiation demo.}
+  note         = {Includes 48 IMR-ReferenceID-linked NegMAS negotiation simulations and Omnitrope demo}
 }
 ```
-
-Or in plain text:
 
 > Yogesh Parte. (2026). Healthcare Claim Negotiation Dataset & NegMAS MARL Showcase. GitHub. https://github.com/YPCC/healthcare-claim-negotiation-marl
 
 ## License & Disclaimer
 
-Educational / research use only. Synthetic data. Not real patient information. Not medical, legal, or claims advice. Always verify against actual policy and regulations.
+Educational / research use only. Synthetic negotiation traces. Original IMR ReferenceIDs are public. Not medical, legal, or claims advice.
 
 ## Next Steps
 
-- Replace classic negotiators with `negmas-llm` agents and inject full Findings text.
-- Wrap with `negmas-rl-tutorial` for MARL training and retraining under policy changes.
-- Scale seed extraction from the full DMHC IMR CSV.
-- Add reward shaping and hard policy shields.
+- Scale to full DMHC CSV with LLM negotiators (`negmas-llm`).
+- Add RL training loop via `negmas-rl-tutorial`.
+- Harden policy shields and reward shaping.
