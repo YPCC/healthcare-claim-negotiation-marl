@@ -1,3 +1,6 @@
 negmas>=0.15
 pandas
 numpy
+# Optional advanced features
+negmas-llm
+# For full RL: pip install git+https://github.com/yasserfarouk/negmas-rl-tutorial.git
