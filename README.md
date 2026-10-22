@@ -26,7 +26,12 @@ Real verbatim claim negotiation transcripts are proprietary and contain PHI. Thi
 ├── docs/
 │   ├── demo_omnitrope_negotiation.md
 │   ├── imr_48_simulation_results.md
-│   └── omnitrope_negotiation_dialogue_video.mp4   # Narrated multi-turn negotiation video
+│   ├── omnitrope_marl_story.mp4
+│   ├── omnitrope_marl_story_narrated.mp4
+│   ├── omnitrope_negotiation_dialogue_video.mp4
+│   ├── omnitrope_three_min_story.mp4
+│   ├── omnitrope_retraining_demo.md
+│   └── omnitrope_three_min_story_script.md
 ├── src/
 │   ├── generate_dataset.py
 │   ├── negmas_claim_negotiation.py
@@ -78,7 +83,11 @@ Converts structured NegMAS offer history into realistic Provider ↔ Payer natur
 
 - Single-case narrative: [docs/demo_omnitrope_negotiation.md](docs/demo_omnitrope_negotiation.md)
 - Verbal transcript example: [examples/omnitrope_verbal_transcript.txt](examples/omnitrope_verbal_transcript.txt)
-- **Narrated multi-turn negotiation video**: [docs/omnitrope_negotiation_dialogue_video.mp4](docs/omnitrope_negotiation_dialogue_video.mp4)
+- **Videos**:
+  - MARL story: [docs/omnitrope_marl_story.mp4](docs/omnitrope_marl_story.mp4)
+  - Narrated MARL story: [docs/omnitrope_marl_story_narrated.mp4](docs/omnitrope_marl_story_narrated.mp4)
+  - Multi-turn negotiation dialogue: [docs/omnitrope_negotiation_dialogue_video.mp4](docs/omnitrope_negotiation_dialogue_video.mp4)
+  - 3-minute techno-functional story: [docs/omnitrope_three_min_story.mp4](docs/omnitrope_three_min_story.mp4)
 - 48 ReferenceID-linked runs: [docs/imr_48_simulation_results.md](docs/imr_48_simulation_results.md)
 
 ## Citation
@@ -90,7 +99,7 @@ Converts structured NegMAS offer history into realistic Provider ↔ Payer natur
   year         = {2026},
   publisher    = {GitHub},
   howpublished = {\url{https://github.com/YPCC/healthcare-claim-negotiation-marl}},
-  note         = {Includes verbal multi-turn transcripts, narrated negotiation video, full DMHC IMR scaling, negmas-llm, RL training, and hardened policy shields}
+  note         = {Includes verbal multi-turn transcripts, narrated videos, full DMHC IMR scaling, negmas-llm, RL training, and hardened policy shields}
 }
 ```
 
