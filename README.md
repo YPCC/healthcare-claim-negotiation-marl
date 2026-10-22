@@ -77,6 +77,26 @@ python src/run_scenarios.py
 - Compatible with frameworks such as Dialogue Diplomats (arXiv:2511.17654) hierarchical consensus + progressive negotiation.
 - Uses public IMR data the same way projects like Fight Health Insurance generate synthetic appeals.
 
+## Citation
+
+If you use this repository, dataset generation approach, or NegMAS scenarios in your research or work, please cite:
+
+```bibtex
+@misc{parte2026healthcareclaimnegotiation,
+  author       = {Yogesh Parte},
+  title        = {Healthcare Claim Negotiation Dataset \& NegMAS MARL Showcase},
+  year         = {2026},
+  publisher    = {GitHub},
+  journal      = {GitHub repository},
+  howpublished = {\url{https://github.com/YPCC/healthcare-claim-negotiation-marl}},
+  note         = {Synthetic multi-turn provider-payer claim negotiation dialogues and NegMAS-based MA-POMDP environment grounded in public DMHC IMR data}
+}
+```
+
+Or in plain text:
+
+> Yogesh Parte. (2026). Healthcare Claim Negotiation Dataset & NegMAS MARL Showcase. GitHub. https://github.com/YPCC/healthcare-claim-negotiation-marl
+
 ## License & Disclaimer
 
 Educational / research use only. Synthetic data. Not real patient information. Not medical, legal, or claims advice. Always verify against actual policy and regulations.
