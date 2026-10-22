@@ -13,6 +13,7 @@ Real verbatim claim negotiation transcripts are proprietary and contain PHI. Thi
 3. Multiple scenarios (medical necessity, experimental, balance-bill, prompt-pay, escalation to IMR).
 4. Hooks for RL / MARL training, policy shields, and retraining.
 5. **Full-scale scaffolding** for the complete DMHC CSV, LLM negotiators (`negmas-llm`), and RL training loops.
+6. **Verbal multi-turn transcripts** generated from structured NegMAS outcomes.
 
 ## Project Structure
 
@@ -29,12 +30,14 @@ Real verbatim claim negotiation transcripts are proprietary and contain PHI. Thi
 │   ├── generate_dataset.py
 │   ├── negmas_claim_negotiation.py
 │   ├── run_scenarios.py
-│   ├── load_full_imr.py          # Full DMHC CSV → seeds
-│   ├── llm_negotiators.py       # negmas-llm wrappers + Findings injection
-│   ├── policy_shields.py        # Hard shields + shaped rewards
-│   └── rl_training_loop.py      # RL/MARL training skeleton
+│   ├── load_full_imr.py
+│   ├── llm_negotiators.py
+│   ├── policy_shields.py
+│   ├── rl_training_loop.py
+│   └── generate_verbal_transcript.py   # Full multi-turn verbal transcripts
 └── examples/
-    └── sample_dialogues.json
+    ├── sample_dialogues.json
+    └── omnitrope_verbal_transcript.txt
 ```
 
 ## Quick Start
@@ -43,43 +46,37 @@ Real verbatim claim negotiation transcripts are proprietary and contain PHI. Thi
 pip install -r requirements.txt
 python src/generate_dataset.py --n 20 --out data/synthetic_negotiations.jsonl
 python src/run_scenarios.py
+python src/generate_verbal_transcript.py   # Produces examples/omnitrope_verbal_transcript.txt
 ```
 
 ## Full-Scale Extensions
 
 ### 1. Full DMHC CSV
 ```bash
-# Download CSV from data.chhs.ca.gov then:
 python src/load_full_imr.py --csv path/to/imr.csv --max 1000 --out data/imr_full_seeds.json
 ```
-Produces ReferenceID-linked seeds ready for NegMAS, LLM, or RL runs.
 
 ### 2. LLM Negotiators (`negmas-llm`)
 ```bash
 pip install negmas-llm
 export OPENAI_API_KEY=...
-python -c "from src.llm_negotiators import run_llm_session; ..."
 ```
-Injects real Findings into the system prompt. Supports OpenAI, Ollama, etc.
 
 ### 3. RL Training Loop
 ```bash
 python src/rl_training_loop.py
-# Or install the official tutorial package:
-# pip install git+https://github.com/yasserfarouk/negmas-rl-tutorial.git
 ```
-Minimal multi-agent environment + shaped rewards. Swap in PPO or the official NegMAS-RL wrappers.
 
-### 4. Hardened Policy Shields & Reward Shaping
-See `src/policy_shields.py`:
-- Hard projection of offers into legal issue bounds
-- Premature-escalation penalty
-- Process rewards (efficiency, compliance) + outcome rewards (recovery / cost control)
-- Reserved-value and overturn-prior modulation
+### 4. Verbal Multi-Turn Transcripts
+```bash
+python src/generate_verbal_transcript.py
+```
+Converts structured NegMAS offer history into realistic Provider ↔ Payer natural-language dialogue grounded in the IMR Findings and the negotiated numbers. Ready for demos, human review, or further LLM refinement.
 
 ## Demo & Results
 
 - Single-case narrative: [docs/demo_omnitrope_negotiation.md](docs/demo_omnitrope_negotiation.md)
+- Verbal transcript example: [examples/omnitrope_verbal_transcript.txt](examples/omnitrope_verbal_transcript.txt)
 - 48 ReferenceID-linked runs: [docs/imr_48_simulation_results.md](docs/imr_48_simulation_results.md)
 
 ## Citation
@@ -91,7 +88,7 @@ See `src/policy_shields.py`:
   year         = {2026},
   publisher    = {GitHub},
   howpublished = {\url{https://github.com/YPCC/healthcare-claim-negotiation-marl}},
-  note         = {Full DMHC IMR scaling, negmas-llm negotiators, RL training skeleton, and hardened policy shields}
+  note         = {Includes verbal multi-turn transcripts, full DMHC IMR scaling, negmas-llm, RL training, and hardened policy shields}
 }
 ```
 
