@@ -1,0 +1,25 @@
+[
+  {
+    "seed_id": "seed_omnitrope_ghd",
+    "turns": [
+      {"turn": 1, "speaker": "Provider", "message": "Appealing Omnitrope denial. Failed stimulation test, low growth velocity, prior response. Requesting full authorization."},
+      {"turn": 2, "speaker": "Payer", "message": "Offer 62% prompt-pay settlement."},
+      {"turn": 3, "speaker": "Provider", "message": "Counter 85%. Evidence meets medical necessity."},
+      {"turn": 4, "speaker": "Payer", "message": "Improved to 74%. Final."},
+      {"turn": 5, "speaker": "Provider", "message": "Accept 74% with written confirmation."}
+    ],
+    "outcome": "settled",
+    "final_offer_pct": 74
+  },
+  {
+    "seed_id": "seed_acute_rehab",
+    "turns": [
+      {"turn": 1, "speaker": "Provider", "message": "Requesting acute rehab for spinal cord injury and wounds."},
+      {"turn": 2, "speaker": "Payer", "message": "Not medically necessary. Lower level of care appropriate. Offer 45%."},
+      {"turn": 3, "speaker": "Provider", "message": "Counter 70% or escalate to IMR."},
+      {"turn": 4, "speaker": "Payer", "message": "Maintain denial. Proceed to external review if desired."}
+    ],
+    "outcome": "escalated_or_upheld",
+    "final_offer_pct": null
+  }
+]

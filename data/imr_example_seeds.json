@@ -1,0 +1,54 @@
+[
+  {
+    "id": "seed_omnitrope_ghd",
+    "reference_style": "IMR Findings – Growth Hormone / Omnitrope",
+    "diagnosis_category": "Endocrine/Metabolic",
+    "treatment": "Omnitrope (growth hormone)",
+    "type": "Medical Necessity",
+    "determination_prior": "Overturned",
+    "overturn_probability": 0.65,
+    "findings_summary": "Patient has growth hormone deficiency and idiopathic short stature. Persistently low growth velocity. Failed growth stimulation test. Prior therapy showed response. Continuation of Omnitrope is medically necessary.",
+    "billed_amount": 4800,
+    "medicare_reference": 3200,
+    "policy_notes": "Medical necessity denial. ERISA 30-day response. Reference-based floor ~140% Medicare in some plans."
+  },
+  {
+    "id": "seed_acute_rehab",
+    "reference_style": "IMR Findings – Acute Inpatient Rehabilitation",
+    "diagnosis_category": "Orthopedic/Musculoskeletal",
+    "treatment": "Acute inpatient rehabilitation (spinal cord injury + wounds)",
+    "type": "Medical Necessity",
+    "determination_prior": "Upheld",
+    "overturn_probability": 0.25,
+    "findings_summary": "Chronic spinal cord injury and pressure wounds. No acute change in medical or functional status. Needs can be managed at lower level of care. Acute inpatient rehab not medically necessary.",
+    "billed_amount": 18500,
+    "medicare_reference": 9200,
+    "policy_notes": "Medical necessity denial. Lower level of care preferred."
+  },
+  {
+    "id": "seed_taltz_biologic",
+    "reference_style": "IMR Findings – Biologic continuation",
+    "diagnosis_category": "Skin / Musculoskeletal",
+    "treatment": "Taltz (ixekizumab)",
+    "type": "Medical Necessity",
+    "determination_prior": "Overturned",
+    "overturn_probability": 0.70,
+    "findings_summary": "Psoriatic arthritis. Failed Enbrel and Cosentyx. Sustained clinical improvement on Taltz documented. Continuation medically necessary.",
+    "billed_amount": 6200,
+    "medicare_reference": 4100,
+    "policy_notes": "Step therapy / medical necessity. Documented failure of prior biologics."
+  },
+  {
+    "id": "seed_zepbound_obesity",
+    "reference_style": "IMR Findings – Weight management",
+    "diagnosis_category": "Endocrine/Metabolic",
+    "treatment": "Zepbound",
+    "type": "Medical Necessity",
+    "determination_prior": "Overturned",
+    "overturn_probability": 0.55,
+    "findings_summary": "Class 3 obesity with hypertension. Participated in structured lifestyle modification and behavioral therapy without adequate weight loss. Zepbound supported by literature.",
+    "billed_amount": 1350,
+    "medicare_reference": 900,
+    "policy_notes": "Weight management coverage varies by plan. Lifestyle failure required."
+  }
+]
