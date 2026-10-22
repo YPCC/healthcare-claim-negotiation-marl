@@ -25,7 +25,8 @@ Real verbatim claim negotiation transcripts are proprietary and contain PHI. Thi
 │   └── simulation_results_50.json
 ├── docs/
 │   ├── demo_omnitrope_negotiation.md
-│   └── imr_48_simulation_results.md
+│   ├── imr_48_simulation_results.md
+│   └── omnitrope_negotiation_dialogue_video.mp4   # Narrated multi-turn negotiation video
 ├── src/
 │   ├── generate_dataset.py
 │   ├── negmas_claim_negotiation.py
@@ -34,7 +35,7 @@ Real verbatim claim negotiation transcripts are proprietary and contain PHI. Thi
 │   ├── llm_negotiators.py
 │   ├── policy_shields.py
 │   ├── rl_training_loop.py
-│   └── generate_verbal_transcript.py   # Full multi-turn verbal transcripts
+│   └── generate_verbal_transcript.py
 └── examples/
     ├── sample_dialogues.json
     └── omnitrope_verbal_transcript.txt
@@ -46,7 +47,7 @@ Real verbatim claim negotiation transcripts are proprietary and contain PHI. Thi
 pip install -r requirements.txt
 python src/generate_dataset.py --n 20 --out data/synthetic_negotiations.jsonl
 python src/run_scenarios.py
-python src/generate_verbal_transcript.py   # Produces examples/omnitrope_verbal_transcript.txt
+python src/generate_verbal_transcript.py
 ```
 
 ## Full-Scale Extensions
@@ -71,12 +72,13 @@ python src/rl_training_loop.py
 ```bash
 python src/generate_verbal_transcript.py
 ```
-Converts structured NegMAS offer history into realistic Provider ↔ Payer natural-language dialogue grounded in the IMR Findings and the negotiated numbers. Ready for demos, human review, or further LLM refinement.
+Converts structured NegMAS offer history into realistic Provider ↔ Payer natural-language dialogue grounded in the IMR Findings and the negotiated numbers.
 
 ## Demo & Results
 
 - Single-case narrative: [docs/demo_omnitrope_negotiation.md](docs/demo_omnitrope_negotiation.md)
 - Verbal transcript example: [examples/omnitrope_verbal_transcript.txt](examples/omnitrope_verbal_transcript.txt)
+- **Narrated multi-turn negotiation video**: [docs/omnitrope_negotiation_dialogue_video.mp4](docs/omnitrope_negotiation_dialogue_video.mp4)
 - 48 ReferenceID-linked runs: [docs/imr_48_simulation_results.md](docs/imr_48_simulation_results.md)
 
 ## Citation
@@ -88,7 +90,7 @@ Converts structured NegMAS offer history into realistic Provider ↔ Payer natur
   year         = {2026},
   publisher    = {GitHub},
   howpublished = {\url{https://github.com/YPCC/healthcare-claim-negotiation-marl}},
-  note         = {Includes verbal multi-turn transcripts, full DMHC IMR scaling, negmas-llm, RL training, and hardened policy shields}
+  note         = {Includes verbal multi-turn transcripts, narrated negotiation video, full DMHC IMR scaling, negmas-llm, RL training, and hardened policy shields}
 }
 ```
 
