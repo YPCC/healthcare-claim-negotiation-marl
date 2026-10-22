@@ -45,10 +45,17 @@ def run_structured_session(seed: Dict[str, Any], n_steps: int = 10) -> Dict[str,
     agreement = dict(zip(names, state.agreement)) if state.agreement else None
     history = []
     if hasattr(session, "history"):
-        for step, offer in enumerate(session.history, 1):
-            if offer and hasattr(offer, "offer") and offer.offer:
-                hist_offer = dict(zip(names, offer.offer))
-                history.append({"step": step, "agent": str(offer.negotiator), "offer": hist_offer})
+        for step_state in session.history:
+            if hasattr(step_state, "new_offers") and step_state.new_offers:
+                for negotiator_id, offer_tuple in step_state.new_offers:
+                    if offer_tuple:
+                        offer = dict(zip(names, offer_tuple))
+                        role = "Provider" if "Provider" in negotiator_id else "Payer"
+                        history.append({
+                            "step": step_state.step,
+                            "agent": role,
+                            "offer": offer,
+                        })
 
     return {
         "agreement": agreement,
@@ -64,36 +71,36 @@ def offer_to_speech(role: str, offer: Dict[str, Any], seed: Dict[str, Any], step
     disc = offer.get("prompt_pay_discount", 0)
     evid = offer.get("evidence_strength", 0)
     esc = offer.get("escalate_to_imr", 0)
-    findings = seed.get("findings_summary", "")[:200]
+    findings = seed.get("findings_summary", "")[:220]
     billed = seed.get("billed_amount", 0)
+    recovery = billed * (pct / 100.0) * (1 - disc / 100.0)
 
-    if role.lower().startswith("provider"):
-        if is_final and not esc:
-            return (f"Provider Billing Specialist: Given the clinical record — {findings} — "
-                    f"we accept the package of {pct}% of billed (${billed * pct/100 * (1-disc/100):,.0f} estimated recovery) "
-                    f"with a {disc}% prompt-pay discount and evidence credit of {evid}. No escalation to IMR. We can close this today.")
-        return (f"Provider Billing Specialist: Based on the Findings ({findings}), "
-                f"we are proposing {pct}% allowed, {disc}% prompt-pay, and evidence strength of {evid}. "
-                f"{'We are prepared to escalate if needed.' if esc else 'We prefer to settle inside the system.'}")
+    if role == "Provider":
+        if is_final:
+            return (f"Provider Billing Specialist: Based on the clinical Findings — {findings} — "
+                    f"we accept {pct}% of billed (estimated recovery ${recovery:,.0f}) with a {disc}% prompt-pay discount "
+                    f"and evidence strength of {evid}. {'Escalation noted.' if esc else 'No escalation to IMR. Case closed.'}")
+        return (f"Provider Billing Specialist (step {step}): Citing the Findings ({findings}), "
+                f"we propose {pct}% allowed (${recovery:,.0f}), {disc}% prompt-pay, evidence credit {evid}. "
+                f"{'Ready to escalate if no progress.' if esc else 'Prefer internal settlement.'}")
     else:
-        return (f"Payer Adjuster: Our counter is {pct}% of billed with a {disc}% prompt-pay discount. "
-                f"Evidence strength noted at {evid}. {'We will allow escalation review.' if esc else 'We believe this stays within policy and can be closed without external review.'}")
+        return (f"Payer Adjuster (step {step}): Counter-offer is {pct}% of billed with {disc}% prompt-pay discount. "
+                f"Evidence noted at {evid}. {'Escalation path remains open.' if esc else 'We can close within policy without external review.'}")
 
 def generate_transcript(result: Dict[str, Any]) -> str:
     seed = result["seed"]
     lines = [
-        f"=== Claim Negotiation Transcript ===",
+        "=== Claim Negotiation Transcript ===",
         f"Reference: {seed.get('reference_style', seed.get('id', 'N/A'))}",
         f"Treatment: {seed.get('treatment')} | Billed: ${seed.get('billed_amount')}",
         f"Findings: {seed.get('findings_summary')}",
         f"Overturn prior: {seed.get('overturn_probability')}",
         "",
-        "--- Dialogue ---",
+        "--- Multi-turn Dialogue ---",
     ]
     history = result.get("history") or []
     for h in history:
-        role = "Provider" if "Provider" in str(h["agent"]) else "Payer"
-        lines.append(offer_to_speech(role, h["offer"], seed, h["step"]))
+        lines.append(offer_to_speech(h["agent"], h["offer"], seed, h["step"]))
         lines.append("")
     if result["agreement"]:
         lines.append("--- Final Agreement ---")
