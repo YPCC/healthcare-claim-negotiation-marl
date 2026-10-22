@@ -20,6 +20,8 @@ Real verbatim claim negotiation transcripts are proprietary and contain PHI. Thi
 ├── requirements.txt
 ├── data/
 │   └── imr_example_seeds.json          # Seed cases derived from real IMR Findings
+├── docs/
+│   └── demo_omnitrope_negotiation.md   # Captured simulation + two-minute narrative
 ├── src/
 │   ├── generate_dataset.py            # Generate multi-turn dialogues from seeds
 │   ├── negmas_claim_negotiation.py    # Core NegMAS SAO scenario
@@ -39,6 +41,17 @@ python src/generate_dataset.py --n 20 --out data/synthetic_negotiations.jsonl
 # 2. Run NegMAS end-to-end scenarios
 python src/run_scenarios.py
 ```
+
+## Demo: Live Negotiation Simulation
+
+A full end-to-end NegMAS SAO run for an Omnitrope / growth-hormone deficiency claim (strong clinical evidence, ~65% historical overturn prior) is documented in:
+
+**[docs/demo_omnitrope_negotiation.md](docs/demo_omnitrope_negotiation.md)**
+
+The demo includes:
+- Exact captured console output from a real NegMAS 0.16 simulation (agreement in 10 steps).
+- Final terms: 52% allowed, 4% prompt-pay discount, no escalation, estimated recovery $2,396 on a $4,800 bill.
+- A two-minute narrative explaining how the agents negotiate, stay inside policy shields, and optimize their designed rewards.
 
 ## Key Components
 
@@ -79,7 +92,7 @@ python src/run_scenarios.py
 
 ## Citation
 
-If you use this repository, dataset generation approach, or NegMAS scenarios in your research or work, please cite:
+If you use this repository, dataset generation approach, NegMAS scenarios, or the Omnitrope demo in your research or work, please cite:
 
 ```bibtex
 @misc{parte2026healthcareclaimnegotiation,
@@ -89,7 +102,7 @@ If you use this repository, dataset generation approach, or NegMAS scenarios in 
   publisher    = {GitHub},
   journal      = {GitHub repository},
   howpublished = {\url{https://github.com/YPCC/healthcare-claim-negotiation-marl}},
-  note         = {Synthetic multi-turn provider-payer claim negotiation dialogues and NegMAS-based MA-POMDP environment grounded in public DMHC IMR data}
+  note         = {Synthetic multi-turn provider-payer claim negotiation dialogues and NegMAS-based MA-POMDP environment grounded in public DMHC IMR data. Includes captured Omnitrope GHD negotiation demo.}
 }
 ```
 
